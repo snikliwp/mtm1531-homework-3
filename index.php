@@ -14,7 +14,7 @@ $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_STRING);
 $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
 $preferedlang = filter_input(INPUT_POST, "preferedlang", FILTER_SANITIZE_STRING);
 $acceptterms = filter_input(INPUT_POST, "acceptterms", FILTER_DEFAULT); // don't bother filtering it
-
+$email_message = "";
 
 if($_SERVER["REQUEST_METHOD"] == "POST") { // When you first open the page you get the name error message because it is not submitted yet. 
 // the $_SERVER global variable tells us whether the form has been posted (submitted) yet if it hasn't don't put up the error message
@@ -40,6 +40,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST") { // When you first open the page you g
 	} 
 	if (empty($errors)) {
 		$display_thanks = true;
+		
+		$email_message = "Name: " . $name . "\r\n"; // "\r\n" is a special character that indicates new line in an email must be in double quotes
+		$email_message .= "E-Mail: " . $email . "\r\n"; // the ".=" causes an append to the existing variable
+		$email_message .=  "Notes: " . "\r\n" . $notes;
+		
+		$headers = "From: Pat Wilkins <wilk0146@algonquinlive.com> . \r\n"; // this is the registration form
+		 // $headers = "From: " $name . " <" . $email . "> \r\n"; // this is the contact form
+		
+		mail($email, "Registration Confirmation", $headers);
 	}
 	
 };
@@ -56,8 +65,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST") { // When you first open the page you g
 <body>
 
 <?php if ($display_thanks) : ?>
+
 	<div class = "message">
-		<strong><p>Thank you for registering!</p></strong>
+		<p><strong>Thank you for registering!</strong></p>
 		<p>An e-mail will be sent to  <?php echo $email ?> confirming registration</p>
 	</div>
 <?php else : ?>    
