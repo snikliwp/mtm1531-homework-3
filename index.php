@@ -6,7 +6,9 @@
 //ini_set('display_errors', 'on');
 //var_dump($_POST);
 include "includes/filter-wrapper.php";
-
+// SwiftMailer is an include that allows HTML formatting of e-mail
+//PostMark is another app that does e-mail but it is a pay for use  program
+// chimpmailer is for bulk mailings
 
 
 $possible_languages = array (
