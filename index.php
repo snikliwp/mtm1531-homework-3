@@ -1,4 +1,14 @@
 <?php 
+
+// This will make error messages visible on edumedia
+// temporary and should be deleted when code is debugged.
+error_reporting(-1);
+ini_set('display_errors', 'on');
+var_dump($_POST);
+
+
+
+
 $possible_languages = array (
 	"eng" => "English",
 	"fre" => "French",
@@ -48,7 +58,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") { // When you first open the page you g
 		$headers = "From: Pat Wilkins <wilk0146@algonquinlive.com> . \r\n"; // this is the registration form
 		 // $headers = "From: " $name . " <" . $email . "> \r\n"; // this is the contact form
 		
-		mail($email, "Registration Confirmation", $headers);
+		mail($email, "Registration Confirmation", $email_message, $headers);
 	}
 	
 };
