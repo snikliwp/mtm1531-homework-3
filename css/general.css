@@ -15,7 +15,8 @@ body {
 	
 }
 
-form {
+form,
+.message {
 	margin: 1em auto;
 	padding: 2em;
 	width: 34em;
@@ -45,3 +46,7 @@ label strong {
 	color: #F00;
 }
 	
+	
+.message {
+	text-align: center;
+}

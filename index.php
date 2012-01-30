@@ -6,17 +6,19 @@ $possible_languages = array (
 	);
 	
 $errors = array();
+$display_thanks = false;
 $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING);
 $notes = filter_input(INPUT_POST, "notes", FILTER_SANITIZE_STRING);
 $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
 $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_STRING);
 $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING);
 $preferedlang = filter_input(INPUT_POST, "preferedlang", FILTER_SANITIZE_STRING);
-$acceptterms = filter_input(INPUT_POST, "acceptterms", FILTER_VALIDATE_BOOLEAN);
+$acceptterms = filter_input(INPUT_POST, "acceptterms", FILTER_DEFAULT); // don't bother filtering it
 
 
 if($_SERVER["REQUEST_METHOD"] == "POST") { // When you first open the page you get the name error message because it is not submitted yet. 
 // the $_SERVER global variable tells us whether the form has been posted (submitted) yet if it hasn't don't put up the error message
+// if it is posted validate the inner fields
 	if (empty($name)) {
 	$errors["name"] = true;
 	};
@@ -32,20 +34,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST") { // When you first open the page you g
 	if (!array_key_exists($preferedlang, $possible_languages)) {
 	$errors["preferedlang"] = true;
 	};
-//	if (!isset($_POST[$acceptterms])) {
-	
-	
-	
-//	var_dump(filter_var($acceptterms, FILTER_VALIDATE_BOOLEAN));
-//	var_dump($acceptterms);
-	if ($acceptterms) {
-//	if (empty($acceptterms)) {
+//	if (!isset($_POST["acceptterms"])) { validate without filters
+	if (empty($acceptterms)) { // validate with filters
 	$errors["acceptterms"] = true;
 	} 
+	if (empty($errors)) {
+		$display_thanks = true;
+	}
 	
 };
-//	var_dump($errors["acceptterms"]);
-
 ?>
 
 <!DOCTYPE HTML>
@@ -57,6 +54,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST") { // When you first open the page you g
 </head>
 
 <body>
+
+<?php if ($display_thanks) : ?>
+	<div class = "message">
+		<strong><p>Thank you for registering!</p></strong>
+		<p>An e-mail will be sent to  <?php echo $email ?> confirming registration</p>
+	</div>
+<?php else : ?>    
+ 
 <form method="post" action="index.php">
 	<h2>Registration Form</h2>
 	<div class="name">
@@ -94,17 +99,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST") { // When you first open the page you g
 	
 	<div class="notes">
 		<label for="notes">Notes: </label>
-		<textarea id="notes" name="notes" > <?php echo$notes;?></textarea>
+		<textarea id="notes" name="notes" ><?php echo$notes;?></textarea>
 	</div>
 	
 	<div class="acceptterms">
 		<label for="acceptterms">By checking this box you agree to the terms and conditions of this agreement.<?php if(isset($errors["acceptterms"])) : ?><strong>You must agree to the Terms and Conditions!</strong><br><?php endif ?> </label>
-		<input type="checkbox" id="acceptterms" name="acceptterms" value="checked"><?php print $acceptterms ?>
-
-<?php	
-	// var_dump($acceptterms);
-?>
-
+		<input type="checkbox" id="acceptterms" name="acceptterms"<?php if(!empty($acceptterms)) echo "checked" ?>>
 	</div>
 		
 	<div class="button">
@@ -113,7 +113,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") { // When you first open the page you g
 
 </form>
 
-
+<?php endif ?>
 
 
 
