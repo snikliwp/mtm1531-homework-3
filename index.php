@@ -5,7 +5,7 @@
 error_reporting(-1);
 ini_set('display_errors', 'on');
 var_dump($_POST);
-
+include "includes/filter-wrapper.php";
 
 
 
