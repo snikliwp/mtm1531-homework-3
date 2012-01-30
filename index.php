@@ -2,9 +2,9 @@
 
 // This will make error messages visible on edumedia
 // temporary and should be deleted when code is debugged.
-error_reporting(-1);
-ini_set('display_errors', 'on');
-var_dump($_POST);
+//error_reporting(-1);
+//ini_set('display_errors', 'on');
+//var_dump($_POST);
 include "includes/filter-wrapper.php";
 
 
